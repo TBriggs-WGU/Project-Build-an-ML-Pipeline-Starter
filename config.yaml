@@ -36,3 +36,8 @@ modeling:
     max_features: 0.5
     # DO not change the following
     oob_score: true
+basic_cleaning:
+  input_artifact: sample.csv:latest
+  output_artifact: clean_sample.csv
+  output_type: clean_sample
+  output_description: "Cleaned data (price bounds, datetime parse, NYC lat/long filter)"
