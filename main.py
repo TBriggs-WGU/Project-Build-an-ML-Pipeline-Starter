@@ -126,11 +126,22 @@ def go(config: DictConfig):
 
         if "test_regression_model" in active_steps:
 
-            ##################
-            # Implement here #
-            ##################
+            os.environ["WANDB_PROJECT"] = config["main"]["project_name"]
 
-            pass
+            os.environ["PYTHONPATH"] = os.pathsep.join([
+                os.path.join(hydra.utils.get_original_cwd(), "components"),
+                os.environ.get("PYTHONPATH", ""),
+            ])
+
+            _ = mlflow.run(
+                os.path.join(hydra.utils.get_original_cwd(), "components", "test_regression_model"),
+                "main",
+                env_manager="local",
+                parameters={
+                    "mlflow_model": "random_forest_export:prod",
+                    "test_dataset": "test_data.csv:latest",
+                },
+            )
 
 
 if __name__ == "__main__":
